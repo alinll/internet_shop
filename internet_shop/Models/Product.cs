@@ -10,7 +10,7 @@ namespace internet_shop.Models
         public string Name { get; set; }
 
         [Required]
-        [Range(1, 100000)]
+        [Range(typeof(float), "1,00", "100000")]
         public float Price { get; set; }
 
         [Required]
