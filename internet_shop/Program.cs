@@ -1,6 +1,9 @@
 using internet_shop.Models;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.V8;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using React.AspNet;
 
 namespace internet_shop
 {
@@ -9,6 +12,11 @@ namespace internet_shop
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddReact();
+
+            builder.Services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName).AddV8();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -50,6 +58,12 @@ namespace internet_shop
             }
 
             app.UseHttpsRedirection();
+
+            app.UseReact(config =>
+            {
+
+            });
+
             app.UseStaticFiles();
 
             app.UseRouting();
